@@ -1,0 +1,108 @@
+:root {
+  --bg: #0f1115;
+  --panel: #171a21;
+  --panel-hover: #1c2029;
+  --border: #262a34;
+  --text: #e8eaed;
+  --muted: #8b90a0;
+  --accent: #4f7cff;
+  --accent-hover: #6b8fff;
+  --danger: #e5484d;
+  --success: #30a46c;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.5; }
+a { color: inherit; }
+h1, h2, h3, h4 { line-height: 1.25; letter-spacing: -0.01em; }
+
+/* Dark-theme scrollbars — default light scrollbars look broken on this bg */
+* { scrollbar-color: var(--border) transparent; scrollbar-width: thin; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+*::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* Consistent, visible focus ring everywhere — nothing had one before,
+   which is a real accessibility gap for keyboard/switch-device users. */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.app-shell { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 220px; background: var(--panel); border-right: 1px solid var(--border);
+  padding: 16px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0;
+}
+.sidebar a {
+  display: block; padding: 8px 10px; border-radius: 6px; text-decoration: none;
+  color: var(--muted); font-size: 14px; transition: background-color 0.12s ease, color 0.12s ease;
+}
+.sidebar a.active { background: var(--accent); color: white; }
+.sidebar a:hover:not(.active) { background: var(--border); color: var(--text); }
+.main-content { flex: 1; padding: 24px; overflow-x: auto; }
+
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px; flex-wrap: wrap; }
+.card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.24);
+}
+.grid { display: grid; gap: 16px; }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+/* Collapse multi-column grids on small screens — several admin pages
+   (Dashboard, Finance, SuperAdmin, BranchComparison) use grid-3/grid-4 for
+   stat cards, which would overflow or squish unreadably on a phone. */
+@media (max-width: 720px) {
+  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-weight: 500; }
+tbody tr { transition: background-color 0.1s ease; }
+tbody tr:hover { background: var(--panel-hover); }
+
+button, input, select, textarea {
+  font-family: inherit; font-size: 14px; background: #1f232d; color: var(--text);
+  border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
+  transition: border-color 0.12s ease, background-color 0.12s ease;
+}
+input:hover:not(:disabled), select:hover:not(:disabled), textarea:hover:not(:disabled) {
+  border-color: var(--muted);
+}
+button {
+  cursor: pointer; background: var(--accent); border-color: var(--accent); color: white;
+  font-weight: 500; transition: background-color 0.12s ease, transform 0.05s ease, border-color 0.12s ease;
+}
+button:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+button:active:not(:disabled) { transform: translateY(1px); }
+button.secondary { background: transparent; border-color: var(--border); color: var(--text); }
+button.secondary:hover:not(:disabled) { background: var(--border); border-color: var(--muted); }
+button.danger { background: var(--danger); border-color: var(--danger); }
+button.danger:hover:not(:disabled) { background: #f16266; border-color: #f16266; }
+button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; background: var(--border); }
+.badge.success { background: rgba(48,164,108,0.2); color: var(--success); }
+.badge.danger { background: rgba(229,72,77,0.2); color: var(--danger); }
+
+.form-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.form-row label { font-size: 12px; color: var(--muted); }
+.error-text { color: var(--danger); font-size: 13px; }
+
+/* Below this width the fixed sidebar stops making sense (Dashboard,
+   Finance etc. are still usable here since .card/table already scroll/wrap;
+   this specifically keeps the shell itself from being unusable on a phone
+   for anyone who opens the admin panel — not just the guest-facing pages,
+   which already had their own mobile-first layouts). */
+@media (max-width: 720px) {
+  .app-shell { flex-direction: column; }
+  .sidebar { width: 100%; flex-direction: row; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border); }
+  .sidebar a { white-space: nowrap; }
+  .main-content { padding: 16px; }
+}

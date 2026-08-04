@@ -1,0 +1,31 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  # Prisma's query engine binary must ship with the function bundle.
+  included_files = ["node_modules/.prisma/client/**"]
+
+# All API calls go to the single Express app, mounted at /api/*.
+# Using a wildcard splat instead of one function per resource keeps this to
+# ONE cold-start function instead of 25+, which matters a lot for a POS
+# where kitchen/POS screens are latency-sensitive.
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# SPA fallback — React Router owns client-side routing, so any non-API,
+# non-asset path falls back to index.html.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[dev]
+  command = "vite"
+  targetPort = 5173
+  port = 8888
+  functionsPort = 9999

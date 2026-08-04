@@ -1,0 +1,53 @@
+{
+  "name": "booker-admin",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "prisma generate",
+    "dev": "netlify dev",
+    "dev:vite": "vite",
+    "dev:server": "tsx watch server/dev-server.ts",
+    "build": "prisma db push --accept-data-loss --skip-generate && vite build",
+    "preview": "vite preview",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p server/tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "prisma": "^5.20.0",
+    "@supabase/supabase-js": "^2.45.4",
+    "@tanstack/react-query": "^5.59.0",
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2",
+    "qrcode.react": "^3.1.0",
+    "serverless-http": "^3.2.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^2.8.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^20.16.11",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "netlify-cli": "^17.38.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.2"
+  }
+}
